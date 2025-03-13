@@ -33,7 +33,29 @@ export default function Home() {
     const { value, name } = event.target;
     setFormvalue((prev) => ({ ...formvalue, [name]: value }));
   };
-  const nemegch = (formvalue) => {
+  class Hello extends React.Component {
+    state = { hasError: false };
+
+    onChange(event) {
+      if (
+        event.target.value.match(/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/)
+      ) {
+        this.setState({ hasError: false });
+      } else {
+        this.setState({ hasError: true });
+      }
+    }
+    render() {
+      return (
+        <div>
+          <input name="name" onChange={this.onChange.bind(this)} />
+          {this.state.hasError && <span>Error</span>}
+        </div>
+      );
+    }
+  }
+
+  const nemegch = () => {
     if (formvalue.number.length < 9) {
       setStep(step + 1);
     } else {
