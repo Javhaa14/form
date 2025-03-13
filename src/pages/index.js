@@ -10,8 +10,7 @@ import { FaChevronLeft } from "react-icons/fa";
 import { useState } from "react";
 import { Ender } from "@/Components/Ender";
 import React, { useCallback } from "react";
-import { useDropzone } from "react-dropzone";
-import { Values } from "./values";
+import { Errors, Values } from "./values";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -24,34 +23,54 @@ const geistMono = Geist_Mono({
 
 export default function Home() {
   const [step, setStep] = useState(0);
-
   const bla = step > 0;
   const end = step == 3;
+
   const CurrentStep = [Steps, Step2, Step3, Ender][step];
   const [formvalue, setFormvalue] = useState(Values);
-  const handleonchange = (event) => {
-    const { value, name } = event.target;
-    setFormvalue((prev) => ({ ...formvalue, [name]: value }));
-  };
   const [isValid, setIsValid] = useState(true);
-  const regex = /[^a-zA-Z]/;
-  if (regex.test(formvalue)) {
-    setIsValid(false);
-  } else {
-    setIsValid(true);
-  }
-  const nemegch = () => {
-    if (setIsValid == true) {
-      setStep(step + 1);
-    } else {
-      console.log("8 orontoi oruul");
+  const handleonchange = (event) => {
+    const { value, name, id } = event.target;
+    const zadalsan = () => ({ ...formvalue });
+    setFormvalue(() => ({ ...zadalsan, [name]: value, [id]: isValid }));
+    InputValidation(event, name, id);
+  };
+
+  const errornames = [
+    "First name cannot contain special characters or numbers.",
+    "Last name cannot contain special characters or numbers.",
+    "This username is already taken. Please choose another one.",
+    "Please enter a valid phone number.",
+    "Please provide a valid email address.",
+    "Password must include letters and numbers.",
+    "Passwords do not match. Please try again.",
+  ];
+  const InputValidation = (event, name, id) => {
+    const regex = /[^a-zA-Z]/;
+
+    if (name == "firstname") {
+      const isInputValid = !regex.test(event.target.value);
+      setIsValid(isInputValid);
     }
-    if (formvalue.number.length < 9) {
-      setStep(step + 1);
-    } else {
-      console.log("8 orontoi oruul");
+    if (name == "lastname") {
+      const isInputValid = !regex.test(event.target.value);
+      setIsValid(isInputValid);
+    }
+    if (name == "number") {
+      if (event.target.value.length == 8) {
+        setIsValid(true);
+      } else {
+        setIsValid(false);
+      }
     }
   };
+
+  console.log(isValid, "isvalid");
+  const nemegch = () => {
+    isValid ? setStep(step + 1) : console.log("hi");
+  };
+  // console.log(formvalue);
+
   const hasagch = () => {
     setStep(step - 1);
   };
@@ -75,6 +94,7 @@ export default function Home() {
   //     </div>
   //   );
   // }
+  console.log(formvalue);
   return (
     <div className="bg-gray-400 w-screen h-screen flex justify-center items-center">
       <div
@@ -86,7 +106,12 @@ export default function Home() {
             end ? "gap-[0px]" : "gap-[28px]"
           }`}>
           <Header></Header>
-          <CurrentStep onchange={handleonchange} formvalue={formvalue} />
+          <CurrentStep
+            onchange={handleonchange}
+            formvalue={formvalue}
+            isvalid={isValid}
+            errorname={errornames[0]}
+            errorid={id}></CurrentStep>{" "}
         </div>
         <div
           className={`${
