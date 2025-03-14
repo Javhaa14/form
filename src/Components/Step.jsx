@@ -1,7 +1,7 @@
 import { Children } from "react";
 import { Error } from "./error/Error1";
 
-export const Steps = ({ formvalue, isvalid, onchange, type, errorname }) => {
+export const Steps = ({ formvalue, onchange, formerror }) => {
   return (
     <div className="w-[418px] h-fit flex flex-col items-start gap-[12px] text-[#334155]">
       <div className="flex flex-col gap-2">
@@ -10,16 +10,23 @@ export const Steps = ({ formvalue, isvalid, onchange, type, errorname }) => {
           value={formvalue.firstname}
           onChange={onchange}
           name="firstname"
-          id="1"
           placeholder="Placeholder"
-          type={type}
           className={`flex w-[392px] h-[20px] gap-2 items-center self-stretch rounded-[8px] p-[22px] placeholder:text-[#8B8E95] ${
-            isvalid
-              ? "border-[#0CA5E9] border-[1px] border-solid"
-              : "border-[#E14942] border-[2px] border-solid"
+            formerror.firstname
+              ? "border-[#E14942] border-[2px] border-solid text-[#E14942]"
+              : "border-[#0CA5E9] border-[1px] border-solid"
           } `}
         />
-        {isvalid ? <p className="hidden"></p> : <Error errorname={errorname} />}
+
+        {formerror.firstname ? (
+          <Error
+            errorname={
+              "First name cannot contain special characters or numbers."
+            }
+          />
+        ) : (
+          <p className="hidden"></p>
+        )}
       </div>
 
       <div className="flex flex-col gap-2">
@@ -29,12 +36,22 @@ export const Steps = ({ formvalue, isvalid, onchange, type, errorname }) => {
           value={formvalue.lastname}
           onChange={onchange}
           name="lastname"
-          id="2"
           placeholder="Placeholder"
-          type={type}
-          className="flex w-[392px] h-[20px] gap-2 items-center self-stretch rounded-[8px] p-[22px] border-[#0CA5E9] border-[1px] border-solid placeholder:text-[#8B8E95]"
+          className={`flex w-[392px] h-[20px] gap-2 items-center self-stretch rounded-[8px] p-[22px] placeholder:text-[#8B8E95] ${
+            formerror.lastname
+              ? "border-[#E14942] border-[2px] border-solid text-[#E14942]"
+              : "border-[#0CA5E9] border-[1px] border-solid"
+          } `}
         />
-        {isvalid ? <p className="hidden"></p> : <Error errorname={errorname} />}
+        {formerror.lastname ? (
+          <Error
+            errorname={
+              "Last name cannot contain special characters or numbers."
+            }
+          />
+        ) : (
+          <p className="hidden"></p>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <p className="text-[#334155] font-bold">Username</p>
@@ -42,12 +59,22 @@ export const Steps = ({ formvalue, isvalid, onchange, type, errorname }) => {
           value={formvalue.username}
           onChange={onchange}
           name="username"
-          id="3"
           placeholder="Placeholder"
-          type={type}
-          className="flex w-[392px] h-[20px] gap-2 items-center self-stretch rounded-[8px] p-[22px] border-[#0CA5E9] border-[1px] border-solid placeholder:text-[#8B8E95]"
+          className={`flex w-[392px] h-[20px] gap-2 items-center self-stretch rounded-[8px] p-[22px] placeholder:text-[#8B8E95] ${
+            formerror.username
+              ? "border-[#E14942] border-[2px] border-solid text-[#E14942]"
+              : "border-[#0CA5E9] border-[1px] border-solid"
+          } `}
         />
-        {isvalid ? <p className="hidden"></p> : <Error errorname={errorname} />}
+        {formerror.username ? (
+          <Error
+            errorname={
+              "This username is already taken. Please choose another one."
+            }
+          />
+        ) : (
+          <p className="hidden"></p>
+        )}
       </div>
     </div>
   );

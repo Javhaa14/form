@@ -1,4 +1,4 @@
-export const Step2 = ({ onchange, formvalue }) => {
+export const Step2 = ({ onchange, formvalue, formerror }) => {
   return (
     <div className="w-[418px] h-fit flex flex-col items-start gap-[12px] text-[#334155]">
       <div className="flex flex-col gap-2">
@@ -9,8 +9,11 @@ export const Step2 = ({ onchange, formvalue }) => {
           placeholder="Placeholder"
           type="email"
           name="email"
-          id=""
-          className="flex w-[392px] h-[20px] gap-2 items-center self-stretch rounded-[8px] p-[22px] border-[#0CA5E9] border-[1px] border-solid placeholder:text-[#8B8E95] placeholder:text-[16px]"
+          className={`flex w-[392px] h-[20px] gap-2 items-center self-stretch rounded-[8px] p-[22px] placeholder:text-[#8B8E95] ${
+            formerror.firstname
+              ? "border-[#E14942] border-[2px] border-solid text-[#E14942]"
+              : "border-[#0CA5E9] border-[1px] border-solid"
+          } `}
         />
       </div>
 
@@ -25,8 +28,11 @@ export const Step2 = ({ onchange, formvalue }) => {
           required
           type="number"
           name="number"
-          id=""
-          className="flex w-[392px] h-[20px] gap-2 items-center self-stretch rounded-[8px] p-[22px] border-[#0CA5E9] border-[1px] border-solid placeholder:text-[#8B8E95] placeholder:text-[16px]"
+          className={`flex w-[392px] h-[20px] gap-2 items-center self-stretch rounded-[8px] p-[22px] placeholder:text-[#8B8E95] ${
+            formerror.firstname
+              ? "border-[#E14942] border-[2px] border-solid text-[#E14942]"
+              : "border-[#0CA5E9] border-[1px] border-solid"
+          } `}
         />
       </div>
       <div className="flex flex-col gap-2">
@@ -37,8 +43,11 @@ export const Step2 = ({ onchange, formvalue }) => {
           placeholder="Placeholder"
           type="password"
           name="password"
-          id=""
-          className="flex w-[392px] h-[20px] gap-2 items-center self-stretch rounded-[8px] p-[22px] border-[#0CA5E9] border-[1px] border-solid placeholder:text-[#8B8E95] placeholder:text-[16px]"
+          className={`flex w-[392px] h-[20px] gap-2 items-center self-stretch rounded-[8px] p-[22px] placeholder:text-[#8B8E95] ${
+            formerror.firstname
+              ? "border-[#E14942] border-[2px] border-solid text-[#E14942]"
+              : "border-[#0CA5E9] border-[1px] border-solid"
+          } `}
         />
       </div>
       <div className="flex flex-col gap-2">
@@ -51,8 +60,11 @@ export const Step2 = ({ onchange, formvalue }) => {
           placeholder="Placeholder"
           type="password"
           name="confirm"
-          id=""
-          className="flex w-[392px] h-[20px] gap-2 items-center self-stretch rounded-[8px] p-[22px] border-[#0CA5E9] border-[1px] border-solid placeholder:text-[#8B8E95] placeholder:text-[16px]"
+          className={`flex w-[392px] h-[20px] gap-2 items-center self-stretch rounded-[8px] p-[22px] placeholder:text-[#8B8E95] ${
+            formerror.firstname
+              ? "border-[#E14942] border-[2px] border-solid text-[#E14942]"
+              : "border-[#0CA5E9] border-[1px] border-solid"
+          } `}
         />
       </div>
     </div>

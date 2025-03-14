@@ -10,7 +10,7 @@ import { FaChevronLeft } from "react-icons/fa";
 import { useState } from "react";
 import { Ender } from "@/Components/Ender";
 import React, { useCallback } from "react";
-import { Errors, Values } from "./values";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -22,54 +22,109 @@ const geistMono = Geist_Mono({
 });
 
 export default function Home() {
+  const Values = {
+    firstname: "",
+    lastname: "",
+    username: "",
+    email: "",
+  };
+  const errors = {
+    firstname: false,
+    lastname: false,
+    username: false,
+    email: false,
+  };
+  const usernames = ["baldan"];
+
   const [step, setStep] = useState(0);
   const bla = step > 0;
   const end = step == 3;
 
   const CurrentStep = [Steps, Step2, Step3, Ender][step];
+
   const [formvalue, setFormvalue] = useState(Values);
-  const [isValid, setIsValid] = useState(true);
+  const [formError, setFormError] = useState(errors);
+  const [isValid, setIsValid] = useState(false);
+
   const handleonchange = (event) => {
-    const { value, name, id } = event.target;
-    const zadalsan = () => ({ ...formvalue });
-    setFormvalue(() => ({ ...zadalsan, [name]: value, [id]: isValid }));
-    InputValidation(event, name, id);
+    const { value, name } = event.target;
+    setFormvalue((formvalue) => ({ ...formvalue, [name]: value }));
   };
 
   const errornames = [
-    "First name cannot contain special characters or numbers.",
-    "Last name cannot contain special characters or numbers.",
-    "This username is already taken. Please choose another one.",
     "Please enter a valid phone number.",
     "Please provide a valid email address.",
     "Password must include letters and numbers.",
     "Passwords do not match. Please try again.",
   ];
-  const InputValidation = (event, name, id) => {
-    const regex = /[^a-zA-Z]/;
 
-    if (name == "firstname") {
-      const isInputValid = !regex.test(event.target.value);
-      setIsValid(isInputValid);
+  const InputValidation = () => {
+    const letterregex = /[^a-zA-Z]/;
+    const emailregex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    let message = {};
+    if (letterregex.test(formvalue.firstname)) {
+      setFormError((prev) => ({ ...prev, firstname: true }));
+    } else {
+      setFormError((prev) => ({ ...prev, firstname: false }));
+      allcheck();
     }
-    if (name == "lastname") {
-      const isInputValid = !regex.test(event.target.value);
-      setIsValid(isInputValid);
+    if (letterregex.test(formvalue.lastname)) {
+      setFormError((prev) => ({ ...prev, lastname: true }));
+    } else {
+      setFormError((prev) => ({ ...prev, lastname: false }));
+      allcheck();
     }
-    if (name == "number") {
-      if (event.target.value.length == 8) {
-        setIsValid(true);
-      } else {
+    if (usernames.includes(formvalue.username)) {
+      setFormError((prev) => ({ ...prev, username: true }));
+    } else {
+      setFormError((prev) => ({ ...prev, username: false }));
+      allcheck();
+    }
+    if (emailregex.test(formvalue.email)) {
+      setFormError((prev) => ({ ...prev, email: false }));
+    } else {
+      setFormError((prev) => ({ ...prev, email: true }));
+      allcheck();
+    }
+    // if (regex.test(formvalue.lastname)) {
+    //   setFormError((prev) => ({ ...prev, lastname: true }));
+    // } else {
+    //   setFormError((prev) => ({ ...prev, lastname: false }));
+    //   allcheck();
+    // }
+    // if (usernames.includes(formvalue.username)) {
+    //   setFormError((prev) => ({ ...prev, username: true }));
+    // } else {
+    //   setFormError((prev) => ({ ...prev, username: false }));
+    //   allcheck();
+    // }
+
+    // if (name == "number") {
+    //   if (event.target.value.length == 8) {
+    //     setIsValid(true);
+    //   } else {
+    //     setIsValid(false);
+    //   }
+    // }
+  };
+
+  const value = Object.values(formError);
+  const allcheck = () => {
+    for (let i = 0; i < value.length; i++) {
+      if (value.includes(true)) {
         setIsValid(false);
+      } else {
+        setIsValid(true);
       }
     }
   };
-
   console.log(isValid, "isvalid");
+
   const nemegch = () => {
-    isValid ? setStep(step + 1) : console.log("hi");
+    InputValidation();
+    // setStep(step + 1);
+    // isValid ? setStep(step + 1) : console.log("hi");
   };
-  // console.log(formvalue);
 
   const hasagch = () => {
     setStep(step - 1);
@@ -94,7 +149,7 @@ export default function Home() {
   //     </div>
   //   );
   // }
-  console.log(formvalue);
+  console.log(formvalue, formError);
   return (
     <div className="bg-gray-400 w-screen h-screen flex justify-center items-center">
       <div
@@ -109,9 +164,7 @@ export default function Home() {
           <CurrentStep
             onchange={handleonchange}
             formvalue={formvalue}
-            isvalid={isValid}
-            errorname={errornames[0]}
-            errorid={id}></CurrentStep>{" "}
+            formerror={formError}></CurrentStep>{" "}
         </div>
         <div
           className={`${
